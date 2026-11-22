@@ -68,16 +68,8 @@
     .error-msg { color: var(--error); font-size: 13px; font-weight: 600; margin-top: 8px; display: none; }
     .success-box {
       display: none; background: #ecfdf5; border: 1px solid #a7f3d0; color: var(--success);
-      padding: 18px; border-radius: 12px; text-align: center;
+      padding: 20px; border-radius: 12px; text-align: center;
     }
-    .cr-panel {
-      margin-top: 24px; border-top: 1px dashed var(--border); padding-top: 14px;
-      text-align: center; font-size: 12.5px; color: var(--muted);
-    }
-    .cr-link { color: var(--accent); cursor: pointer; text-decoration: underline; font-weight: 600; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-    th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
-    th { background: #f1f5f9; color: var(--primary); }
   </style>
 </head>
 <body>
@@ -146,20 +138,11 @@
       <h3 style="margin:0 0 6px;">Preferences Recorded!</h3>
       <p style="margin:0; font-size:14px;">Your Top 5 rankings have been saved. Need to change your mind? Refresh and submit with the same Entry Number to update.</p>
     </div>
-
-    <div class="cr-panel">
-      CR Admin: <span class="cr-link" onclick="toggleAdmin()">View Local Tally & Export CSV</span>
-      <div id="adminBox" style="display:none; text-align:left; margin-top:12px;" class="card">
-        <h2>Local Borda Tally (5-4-3-2-1)</h2>
-        <div id="tallyTable"></div>
-        <button type="button" class="btn" style="margin-top:12px; padding:9px; font-size:13px;" onclick="downloadCSV()">Download Responses CSV</button>
-      </div>
-    </div>
   </div>
 
   <script>
-    // Paste your deployed Google Apps Script Web App URL below:
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw364MwXquthQeGy_qZJVZFQrXHQ6tYJkoW152YXWQKPhe4S3OC-Mn4NdJ4qFnVb4sFeQ/exec";
+    // Paste your newly deployed Google Apps Script Web App URL below:
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0ktGiwGDfYofSxR4jhcdQ5_F0q86p-lhtfEfJWBIhN3X38wVMOu-WZxlQhiBLVff6UQ/exec";
 
     const UNIVERSITIES = [
       { value: "SDA Bocconi, Milan", label: "SDA Bocconi School of Management — Milan, Italy" },
@@ -172,14 +155,13 @@
     ];
 
     const RANKS = [
-      { id: "choice1", label: "1st Preference (5 Points) *", placeholder: "-- Select your #1 choice --", pts: 5 },
-      { id: "choice2", label: "2nd Preference (4 Points) *", placeholder: "-- Select your #2 choice --", pts: 4 },
-      { id: "choice3", label: "3rd Preference (3 Points) *", placeholder: "-- Select your #3 choice --", pts: 3 },
-      { id: "choice4", label: "4th Preference (2 Points) *", placeholder: "-- Select your #4 choice --", pts: 2 },
-      { id: "choice5", label: "5th Preference (1 Point) *", placeholder: "-- Select your #5 choice --", pts: 1 }
+      { id: "choice1", label: "1st Preference (5 Points) *", placeholder: "-- Select your #1 choice --" },
+      { id: "choice2", label: "2nd Preference (4 Points) *", placeholder: "-- Select your #2 choice --" },
+      { id: "choice3", label: "3rd Preference (3 Points) *", placeholder: "-- Select your #3 choice --" },
+      { id: "choice4", label: "4th Preference (2 Points) *", placeholder: "-- Select your #4 choice --" },
+      { id: "choice5", label: "5th Preference (1 Point) *", placeholder: "-- Select your #5 choice --" }
     ];
 
-    // Render the 5 dropdowns dynamically
     const rankContainer = document.getElementById("rankContainer");
     RANKS.forEach(r => {
       const div = document.createElement("div");
@@ -194,7 +176,6 @@
       rankContainer.appendChild(div);
     });
 
-    // Gray out already-selected options across all 5 dropdowns
     const selects = Array.from(document.querySelectorAll(".rank-select"));
     selects.forEach(sel => {
       sel.addEventListener("change", () => {
@@ -225,7 +206,6 @@
       }
 
       const payload = {
-        timestamp: new Date().toISOString(),
         name,
         entryNo,
         choice1: choices[0],
@@ -235,68 +215,25 @@
         choice5: choices[4]
       };
 
-      const stored = JSON.parse(localStorage.getItem("gfs_votes_top5") || "[]").filter(v => v.entryNo !== entryNo);
-      stored.push(payload);
-      localStorage.setItem("gfs_votes_top5", JSON.stringify(stored));
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
 
-      if (APPS_SCRIPT_URL) {
-        const btn = document.getElementById("submitBtn");
-        btn.disabled = true;
-        btn.textContent = "Submitting...";
-        try {
-          await fetch(APPS_SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-        } catch (err) { console.error(err); }
+      try {
+        await fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        form.style.display = "none";
+        document.getElementById("successBox").style.display = "block";
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "Submit My Top 5 Preferences";
+        alert("Submission failed. Please check your connection and try again.");
       }
-
-      form.style.display = "none";
-      document.getElementById("successBox").style.display = "block";
-      renderTally();
     });
-
-    function toggleAdmin() {
-      const box = document.getElementById("adminBox");
-      box.style.display = box.style.display === "none" ? "block" : "none";
-      renderTally();
-    }
-
-    function renderTally() {
-      const votes = JSON.parse(localStorage.getItem("gfs_votes_top5") || "[]");
-      const scores = {};
-      votes.forEach(v => {
-        scores[v.choice1] = (scores[v.choice1] || 0) + 5;
-        scores[v.choice2] = (scores[v.choice2] || 0) + 4;
-        scores[v.choice3] = (scores[v.choice3] || 0) + 3;
-        scores[v.choice4] = (scores[v.choice4] || 0) + 2;
-        scores[v.choice5] = (scores[v.choice5] || 0) + 1;
-      });
-      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-      let html = `<p style="margin:0 0 6px;font-size:13px;">Local Responses: <strong>${votes.length}</strong></p>`;
-      html += `<table><tr><th>Rank</th><th>University</th><th>Weighted Points</th></tr>`;
-      sorted.forEach(([uni, pts], i) => {
-        html += `<tr><td><strong>#${i + 1}</strong></td><td>${uni}</td><td>${pts} pts</td></tr>`;
-      });
-      html += `</table>`;
-      document.getElementById("tallyTable").innerHTML = html;
-    }
-
-    function downloadCSV() {
-      const votes = JSON.parse(localStorage.getItem("gfs_votes_top5") || "[]");
-      if (!votes.length) return alert("No local votes recorded yet.");
-      const csv = [
-        ["Timestamp", "EntryNo", "Name", "Choice1", "Choice2", "Choice3", "Choice4", "Choice5"].join(","),
-        ...votes.map(v => [v.timestamp, v.entryNo, `"${v.name}"`, `"${v.choice1}"`, `"${v.choice2}"`, `"${v.choice3}"`, `"${v.choice4}"`, `"${v.choice5}"`].join(","))
-      ].join("\n");
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-      a.download = "DMS_GFS_Top5_Preferences.csv";
-      a.click();
-    }
   </script>
 </body>
 </html>
-
