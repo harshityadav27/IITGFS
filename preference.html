@@ -27,7 +27,6 @@
     .badge {
       display: inline-block; background: rgba(255,255,255,0.18); font-size: 12px;
       font-weight: 600; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px;
-      letter-spacing: 0.4px;
     }
     .header h1 { margin: 0 0 6px; font-size: 22px; }
     .header p { margin: 0; font-size: 14px; opacity: 0.92; line-height: 1.45; }
@@ -48,9 +47,7 @@
       font-size: 14px; background: #fff; color: var(--text);
     }
     input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,102,130,0.12); }
-    .college-ref {
-      display: grid; gap: 8px; margin-top: 8px;
-    }
+    .college-ref { display: grid; gap: 8px; margin-top: 8px; }
     .ref-item {
       padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
       background: #fafbfd; font-size: 13px;
@@ -88,13 +85,12 @@
     <div class="header">
       <div class="badge">DMS IIT DELHI • MBA 2025–27</div>
       <h1>GFS Batch Preference Poll</h1>
-      <p>Collective poll to align our batch's Top 2 university choices before filling the official DMS form. Takes 60 seconds.</p>
+      <p>Rank your Top 5 universities so our batch submits a unified preference order on the official DMS form.</p>
     </div>
 
     <div class="info-box">
-      <strong>How Collective Selection Works:</strong> Each student picks a unique <strong>1st, 2nd, and 3rd Choice</strong>.
-      We use weighted points (<strong>1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt</strong>) so there is zero vote-splitting.
-      The top two scorers become our unified batch <strong>Rank #1</strong> and <strong>Rank #2</strong> on the DMS form!
+      <strong>Scoring Formula:</strong> <strong>1st = 5 pts</strong>, <strong>2nd = 4 pts</strong>, <strong>3rd = 3 pts</strong>, <strong>4th = 2 pts</strong>, <strong>5th = 1 pt</strong>.
+      Resubmitting with the same Entry Number automatically updates your previous vote.
     </div>
 
     <form id="gfsForm">
@@ -117,11 +113,11 @@
         <div class="college-ref">
           <div class="ref-item">
             <strong>SDA Bocconi, Milan (Italy)</strong> <span class="tag">QS #10 Business</span><br/>
-            Schengen visa • High-speed trains to Switzerland, Lake Como, Venice, Florence & Rome.
+            Schengen visa • Fast trains to Switzerland, Lake Como, Venice, Florence & Rome.
           </div>
           <div class="ref-item">
             <strong>MIP Politecnico di Milano / POLIMI (Italy)</strong> <span class="tag">QS #=87 Overall | #66 Business</span><br/>
-            Schengen visa • Same prime Milan hub + strong tech, engineering & luxury corporate links.
+            Schengen visa • Prime Milan hub + strong tech, engineering & luxury corporate links.
           </div>
           <div class="ref-item">
             <strong>WU Vienna (Austria)</strong> <span class="tag">QS #69 Business | #5 Supply Chain</span><br/>
@@ -129,75 +125,32 @@
           </div>
           <div class="ref-item">
             <strong>IÉSEG School of Management, Paris (France)</strong> <span class="tag">QS #51–100 Business</span><br/>
-            Schengen visa • Paris city life + fast trains to Brussels, Amsterdam & Switzerland.
+            Schengen visa • Paris nightlife + fast trains to Brussels, Amsterdam & Switzerland.
           </div>
           <div class="ref-item">
-            <strong>Other Form Options (Reading Malaysia / Huddersfield UK / SKOLKOVO Russia)</strong><br/>
-            Lower QS business rank or non-Schengen visa restrictions compared to mainland Europe.
+            <strong>Other Options:</strong> Reading Malaysia (Henley, QS #196 parent, Singapore border) • Huddersfield (UK-only visa, QS #=521) • SKOLKOVO Moscow (Unranked, card/visa limits).
           </div>
         </div>
       </div>
 
       <div class="card">
-        <h2>3. Rank Your Top 3 Preferences (No Repeats)</h2>
-
-        <div class="rank-row">
-          <label for="choice1">1st Preference (3 Points) *</label>
-          <select id="choice1" required>
-            <option value="">-- Select your #1 choice --</option>
-            <option value="SDA Bocconi, Milan">SDA Bocconi School of Management — Milan, Italy</option>
-            <option value="POLIMI (MIP), Milan">MIP Politecnico di Milano (POLIMI) — Milan, Italy</option>
-            <option value="WU Vienna, Austria">WU Vienna — Vienna, Austria</option>
-            <option value="IESEG, Paris">IÉSEG School of Management — Paris, France</option>
-            <option value="Reading Malaysia (Henley)">University of Reading Malaysia (Henley) — Johor</option>
-            <option value="University of Huddersfield, UK">University of Huddersfield — UK</option>
-            <option value="SKOLKOVO, Moscow">Moscow School of Management SKOLKOVO — Russia</option>
-          </select>
-        </div>
-
-        <div class="rank-row">
-          <label for="choice2">2nd Preference (2 Points) *</label>
-          <select id="choice2" required>
-            <option value="">-- Select your #2 choice --</option>
-            <option value="SDA Bocconi, Milan">SDA Bocconi School of Management — Milan, Italy</option>
-            <option value="POLIMI (MIP), Milan">MIP Politecnico di Milano (POLIMI) — Milan, Italy</option>
-            <option value="WU Vienna, Austria">WU Vienna — Vienna, Austria</option>
-            <option value="IESEG, Paris">IÉSEG School of Management — Paris, France</option>
-            <option value="Reading Malaysia (Henley)">University of Reading Malaysia (Henley) — Johor</option>
-            <option value="University of Huddersfield, UK">University of Huddersfield — UK</option>
-            <option value="SKOLKOVO, Moscow">Moscow School of Management SKOLKOVO — Russia</option>
-          </select>
-        </div>
-
-        <div class="rank-row">
-          <label for="choice3">3rd Preference (1 Point) *</label>
-          <select id="choice3" required>
-            <option value="">-- Select your #3 choice --</option>
-            <option value="SDA Bocconi, Milan">SDA Bocconi School of Management — Milan, Italy</option>
-            <option value="POLIMI (MIP), Milan">MIP Politecnico di Milano (POLIMI) — Milan, Italy</option>
-            <option value="WU Vienna, Austria">WU Vienna — Vienna, Austria</option>
-            <option value="IESEG, Paris">IÉSEG School of Management — Paris, France</option>
-            <option value="Reading Malaysia (Henley)">University of Reading Malaysia (Henley) — Johor</option>
-            <option value="University of Huddersfield, UK">University of Huddersfield — UK</option>
-            <option value="SKOLKOVO, Moscow">Moscow School of Management SKOLKOVO — Russia</option>
-          </select>
-        </div>
-
-        <div id="errBox" class="error-msg">Please select three different universities for your 1st, 2nd, and 3rd preferences.</div>
+        <h2>3. Rank Your Top 5 Preferences (No Repeats)</h2>
+        <div id="rankContainer"></div>
+        <div id="errBox" class="error-msg">Please select 5 distinct universities with no duplicates.</div>
       </div>
 
-      <button type="submit" class="btn" id="submitBtn">Submit My GFS Preference</button>
+      <button type="submit" class="btn" id="submitBtn">Submit My Top 5 Preferences</button>
     </form>
 
     <div class="success-box" id="successBox">
-      <h3 style="margin:0 0 6px;">Response Recorded!</h3>
-      <p style="margin:0; font-size:14px;">Thanks for voting. CR will share the final weighted Top 2 consensus with the batch shortly.</p>
+      <h3 style="margin:0 0 6px;">Preferences Recorded!</h3>
+      <p style="margin:0; font-size:14px;">Your Top 5 rankings have been saved. Need to change your mind? Refresh and submit with the same Entry Number to update.</p>
     </div>
 
     <div class="cr-panel">
-      CR Admin: <span class="cr-link" onclick="toggleAdmin()">View Live Tally & Export CSV</span>
+      CR Admin: <span class="cr-link" onclick="toggleAdmin()">View Local Tally & Export CSV</span>
       <div id="adminBox" style="display:none; text-align:left; margin-top:12px;" class="card">
-        <h2>Live Borda Tally (Local / Sheet Sync)</h2>
+        <h2>Local Borda Tally (5-4-3-2-1)</h2>
         <div id="tallyTable"></div>
         <button type="button" class="btn" style="margin-top:12px; padding:9px; font-size:13px;" onclick="downloadCSV()">Download Responses CSV</button>
       </div>
@@ -205,8 +158,55 @@
   </div>
 
   <script>
-    // Optional: Paste your Google Apps Script Web App URL from sem3feedback here to save to Google Sheets
+    // Paste your deployed Google Apps Script Web App URL below:
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw364MwXquthQeGy_qZJVZFQrXHQ6tYJkoW152YXWQKPhe4S3OC-Mn4NdJ4qFnVb4sFeQ/exec";
+
+    const UNIVERSITIES = [
+      { value: "SDA Bocconi, Milan", label: "SDA Bocconi School of Management — Milan, Italy" },
+      { value: "POLIMI (MIP), Milan", label: "MIP Politecnico di Milano (POLIMI) — Milan, Italy" },
+      { value: "WU Vienna, Austria", label: "WU Vienna — Vienna, Austria" },
+      { value: "IESEG, Paris", label: "IÉSEG School of Management — Paris, France" },
+      { value: "Reading Malaysia (Henley)", label: "University of Reading Malaysia (Henley) — Johor, Malaysia" },
+      { value: "University of Huddersfield, UK", label: "University of Huddersfield — Huddersfield, UK" },
+      { value: "SKOLKOVO, Moscow", label: "Moscow School of Management SKOLKOVO — Moscow, Russia" }
+    ];
+
+    const RANKS = [
+      { id: "choice1", label: "1st Preference (5 Points) *", placeholder: "-- Select your #1 choice --", pts: 5 },
+      { id: "choice2", label: "2nd Preference (4 Points) *", placeholder: "-- Select your #2 choice --", pts: 4 },
+      { id: "choice3", label: "3rd Preference (3 Points) *", placeholder: "-- Select your #3 choice --", pts: 3 },
+      { id: "choice4", label: "4th Preference (2 Points) *", placeholder: "-- Select your #4 choice --", pts: 2 },
+      { id: "choice5", label: "5th Preference (1 Point) *", placeholder: "-- Select your #5 choice --", pts: 1 }
+    ];
+
+    // Render the 5 dropdowns dynamically
+    const rankContainer = document.getElementById("rankContainer");
+    RANKS.forEach(r => {
+      const div = document.createElement("div");
+      div.className = "rank-row";
+      div.innerHTML = `
+        <label for="${r.id}">${r.label}</label>
+        <select id="${r.id}" class="rank-select" required>
+          <option value="">${r.placeholder}</option>
+          ${UNIVERSITIES.map(u => `<option value="${u.value}">${u.label}</option>`).join("")}
+        </select>
+      `;
+      rankContainer.appendChild(div);
+    });
+
+    // Gray out already-selected options across all 5 dropdowns
+    const selects = Array.from(document.querySelectorAll(".rank-select"));
+    selects.forEach(sel => {
+      sel.addEventListener("change", () => {
+        const chosen = new Set(selects.map(s => s.value).filter(Boolean));
+        selects.forEach(s => {
+          Array.from(s.options).forEach(opt => {
+            if (!opt.value) return;
+            opt.disabled = chosen.has(opt.value) && s.value !== opt.value;
+          });
+        });
+      });
+    });
 
     const form = document.getElementById("gfsForm");
     const errBox = document.getElementById("errBox");
@@ -217,21 +217,27 @@
 
       const name = document.getElementById("studentName").value.trim();
       const entryNo = document.getElementById("entryNo").value.trim().toUpperCase();
-      const c1 = document.getElementById("choice1").value;
-      const c2 = document.getElementById("choice2").value;
-      const c3 = document.getElementById("choice3").value;
+      const choices = selects.map(s => s.value);
 
-      if (new Set([c1, c2, c3]).size < 3) {
+      if (new Set(choices).size < 5 || choices.includes("")) {
         errBox.style.display = "block";
         return;
       }
 
-      const payload = { timestamp: new Date().toISOString(), name, entryNo, choice1: c1, choice2: c2, choice3: c3 };
+      const payload = {
+        timestamp: new Date().toISOString(),
+        name,
+        entryNo,
+        choice1: choices[0],
+        choice2: choices[1],
+        choice3: choices[2],
+        choice4: choices[3],
+        choice5: choices[4]
+      };
 
-      // Save locally & prevent duplicate entry number overwrite
-      const stored = JSON.parse(localStorage.getItem("gfs_votes") || "[]").filter(v => v.entryNo !== entryNo);
+      const stored = JSON.parse(localStorage.getItem("gfs_votes_top5") || "[]").filter(v => v.entryNo !== entryNo);
       stored.push(payload);
-      localStorage.setItem("gfs_votes", JSON.stringify(stored));
+      localStorage.setItem("gfs_votes_top5", JSON.stringify(stored));
 
       if (APPS_SCRIPT_URL) {
         const btn = document.getElementById("submitBtn");
@@ -259,15 +265,17 @@
     }
 
     function renderTally() {
-      const votes = JSON.parse(localStorage.getItem("gfs_votes") || "[]");
+      const votes = JSON.parse(localStorage.getItem("gfs_votes_top5") || "[]");
       const scores = {};
       votes.forEach(v => {
-        scores[v.choice1] = (scores[v.choice1] || 0) + 3;
-        scores[v.choice2] = (scores[v.choice2] || 0) + 2;
-        scores[v.choice3] = (scores[v.choice3] || 0) + 1;
+        scores[v.choice1] = (scores[v.choice1] || 0) + 5;
+        scores[v.choice2] = (scores[v.choice2] || 0) + 4;
+        scores[v.choice3] = (scores[v.choice3] || 0) + 3;
+        scores[v.choice4] = (scores[v.choice4] || 0) + 2;
+        scores[v.choice5] = (scores[v.choice5] || 0) + 1;
       });
       const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-      let html = `<p style="margin:0 0 6px;font-size:13px;">Total Responses: <strong>${votes.length}</strong></p>`;
+      let html = `<p style="margin:0 0 6px;font-size:13px;">Local Responses: <strong>${votes.length}</strong></p>`;
       html += `<table><tr><th>Rank</th><th>University</th><th>Weighted Points</th></tr>`;
       sorted.forEach(([uni, pts], i) => {
         html += `<tr><td><strong>#${i + 1}</strong></td><td>${uni}</td><td>${pts} pts</td></tr>`;
@@ -277,19 +285,18 @@
     }
 
     function downloadCSV() {
-      const votes = JSON.parse(localStorage.getItem("gfs_votes") || "[]");
-      if (!votes.length) return alert("No votes recorded yet.");
+      const votes = JSON.parse(localStorage.getItem("gfs_votes_top5") || "[]");
+      if (!votes.length) return alert("No local votes recorded yet.");
       const csv = [
-        ["Timestamp", "Name", "EntryNo", "1st_Choice", "2nd_Choice", "3rd_Choice"].join(","),
-        ...votes.map(v => [v.timestamp, `"${v.name}"`, v.entryNo, `"${v.choice1}"`, `"${v.choice2}"`, `"${v.choice3}"`].join(","))
+        ["Timestamp", "EntryNo", "Name", "Choice1", "Choice2", "Choice3", "Choice4", "Choice5"].join(","),
+        ...votes.map(v => [v.timestamp, v.entryNo, `"${v.name}"`, `"${v.choice1}"`, `"${v.choice2}"`, `"${v.choice3}"`, `"${v.choice4}"`, `"${v.choice5}"`].join(","))
       ].join("\n");
       const a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
-      a.download = "DMS_GFS_Batch_Preferences.csv";
+      a.download = "DMS_GFS_Top5_Preferences.csv";
       a.click();
     }
   </script>
 </body>
 </html>
-
 
