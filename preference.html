@@ -1,345 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Share Your Preferences</title>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DMS IIT Delhi — GFS Batch Preference Poll</title>
   <style>
     :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --item: #334155;
-      --accent: #38bdf8;
-      --accent-hover: #0284c7;
-      --text: #f8fafc;
-      --muted: #94a3b8;
+      --primary: #172b4d;
+      --accent: #006682;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --border: #dce3ec;
+      --text: #1e293b;
+      --muted: #64748b;
+      --success: #0f766e;
+      --error: #dc2626;
     }
-
-    * {
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { margin: 0; background: var(--bg); color: var(--text); padding: 20px 14px 48px; }
+    .container { max-width: 680px; margin: 0 auto; }
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff; padding: 24px 22px; border-radius: 14px; margin-bottom: 16px;
+      box-shadow: 0 6px 18px rgba(23, 43, 77, 0.14);
     }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    .badge {
+      display: inline-block; background: rgba(255,255,255,0.18); font-size: 12px;
+      font-weight: 600; padding: 4px 10px; border-radius: 999px; margin-bottom: 8px;
+      letter-spacing: 0.4px;
     }
-
-    .container {
-      background-color: var(--card);
-      width: 100%;
-      max-width: 480px;
-      padding: 28px 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    .header h1 { margin: 0 0 6px; font-size: 22px; }
+    .header p { margin: 0; font-size: 14px; opacity: 0.92; line-height: 1.45; }
+    .info-box {
+      background: #e6f4f8; border-left: 4px solid var(--accent); padding: 12px 14px;
+      border-radius: 8px; font-size: 13.5px; line-height: 1.45; margin-bottom: 16px;
     }
-
-    h1 {
-      font-size: 1.5rem;
-      margin: 0 0 6px 0;
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
-
-    p.subtitle {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin: 0 0 22px 0;
+    .card h2 { margin: 0 0 12px; font-size: 16px; color: var(--primary); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 540px) { .grid-2 { grid-template-columns: 1fr; } }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; color: var(--primary); }
+    input[type="text"], select {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+      font-size: 14px; background: #fff; color: var(--text);
     }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #e2e8f0;
+    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,102,130,0.12); }
+    .college-ref {
+      display: grid; gap: 8px; margin-top: 8px;
     }
-
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 18px;
-      border-radius: 8px;
-      border: 1px solid #475569;
-      background-color: #0f172a;
-      color: var(--text);
-      font-size: 0.95rem;
+    .ref-item {
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px;
+      background: #fafbfd; font-size: 13px;
     }
-
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent);
+    .ref-item strong { color: var(--primary); }
+    .tag {
+      display: inline-block; background: #eef2ff; color: #3730a3; font-size: 11.5px;
+      font-weight: 600; padding: 2px 7px; border-radius: 5px; margin-left: 6px;
     }
-
-    .rank-hint {
-      font-size: 0.8rem;
-      color: var(--accent);
-      margin-bottom: 10px;
-      display: block;
+    .rank-row { margin-bottom: 12px; }
+    .btn {
+      width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 15px;
+      font-weight: 600; cursor: pointer; background: var(--primary); color: #fff;
+      transition: background 0.15s ease;
     }
-
-    #preference-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 22px 0;
+    .btn:hover { background: var(--accent); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .error-msg { color: var(--error); font-size: 13px; font-weight: 600; margin-top: 8px; display: none; }
+    .success-box {
+      display: none; background: #ecfdf5; border: 1px solid #a7f3d0; color: var(--success);
+      padding: 18px; border-radius: 12px; text-align: center;
     }
-
-    .rank-item {
-      background-color: var(--item);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: grab;
-      user-select: none;
-      border: 1px solid transparent;
-      transition: transform 0.15s ease, border-color 0.15s ease;
+    .cr-panel {
+      margin-top: 24px; border-top: 1px dashed var(--border); padding-top: 14px;
+      text-align: center; font-size: 12.5px; color: var(--muted);
     }
-
-    .rank-item:active {
-      cursor: grabbing;
-      border-color: var(--accent);
-    }
-
-    .sortable-ghost {
-      opacity: 0.4;
-    }
-
-    .item-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .rank-badge {
-      background-color: var(--accent);
-      color: #0f172a;
-      font-weight: 700;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      flex-shrink: 0;
-    }
-
-    .item-text {
-      font-size: 0.95rem;
-      font-weight: 500;
-    }
-
-    .controls {
-      display: flex;
-      gap: 6px;
-    }
-
-    .move-btn {
-      background: #1e293b;
-      border: 1px solid #475569;
-      color: var(--text);
-      border-radius: 6px;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .move-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    button[type="submit"] {
-      width: 100%;
-      padding: 14px;
-      background-color: var(--accent);
-      color: #0f172a;
-      font-weight: 700;
-      font-size: 1rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-
-    button[type="submit"]:hover {
-      background-color: var(--accent-hover);
-      color: #fff;
-    }
-
-    button[type="submit"]:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    #status-msg {
-      margin-top: 14px;
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
+    .cr-link { color: var(--accent); cursor: pointer; text-decoration: underline; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; }
+    th { background: #f1f5f9; color: var(--primary); }
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h1>Thanks for scanning!</h1>
-    <p class="subtitle">Rank your priorities below so I can tailor our next conversation.</p>
+    <div class="header">
+      <div class="badge">DMS IIT DELHI • MBA 2025–27</div>
+      <h1>GFS Batch Preference Poll</h1>
+      <p>Collective poll to align our batch's Top 2 university choices before filling the official DMS form. Takes 60 seconds.</p>
+    </div>
 
-    <form id="pref-form">
-      <label for="name">Your Name *</label>
-      <input type="text" id="name" name="name" placeholder="e.g., Rohan Sharma" required>
+    <div class="info-box">
+      <strong>How Collective Selection Works:</strong> Each student picks a unique <strong>1st, 2nd, and 3rd Choice</strong>.
+      We use weighted points (<strong>1st = 3 pts, 2nd = 2 pts, 3rd = 1 pt</strong>) so there is zero vote-splitting.
+      The top two scorers become our unified batch <strong>Rank #1</strong> and <strong>Rank #2</strong> on the DMS form!
+    </div>
 
-      <label for="contact">Email or WhatsApp Number *</label>
-      <input type="text" id="contact" name="contact" placeholder="e.g., +91 98765 43210 or name@email.com" required>
+    <form id="gfsForm">
+      <div class="card">
+        <h2>1. Student Details</h2>
+        <div class="grid-2">
+          <div>
+            <label for="studentName">Full Name *</label>
+            <input type="text" id="studentName" required placeholder="e.g., Harshit Yadav" />
+          </div>
+          <div>
+            <label for="entryNo">Entry Number / Roll No. *</label>
+            <input type="text" id="entryNo" required placeholder="e.g., 2025SMZ0001" />
+          </div>
+        </div>
+      </div>
 
-      <label>Arrange Your Preferences in Order</label>
-      <span class="rank-hint">Drag items or tap arrows (#1 = Highest Priority)</span>
+      <div class="card">
+        <h2>2. Quick Reference: QS Rank & Travel Access</h2>
+        <div class="college-ref">
+          <div class="ref-item">
+            <strong>SDA Bocconi, Milan (Italy)</strong> <span class="tag">QS #10 Business</span><br/>
+            Schengen visa • High-speed trains to Switzerland, Lake Como, Venice, Florence & Rome.
+          </div>
+          <div class="ref-item">
+            <strong>MIP Politecnico di Milano / POLIMI (Italy)</strong> <span class="tag">QS #=87 Overall | #66 Business</span><br/>
+            Schengen visa • Same prime Milan hub + strong tech, engineering & luxury corporate links.
+          </div>
+          <div class="ref-item">
+            <strong>WU Vienna (Austria)</strong> <span class="tag">QS #69 Business | #5 Supply Chain</span><br/>
+            Schengen visa • Budget-friendly 1–4 hr train hops to Budapest, Prague, Bratislava & Munich.
+          </div>
+          <div class="ref-item">
+            <strong>IÉSEG School of Management, Paris (France)</strong> <span class="tag">QS #51–100 Business</span><br/>
+            Schengen visa • Paris city life + fast trains to Brussels, Amsterdam & Switzerland.
+          </div>
+          <div class="ref-item">
+            <strong>Other Form Options (Reading Malaysia / Huddersfield UK / SKOLKOVO Russia)</strong><br/>
+            Lower QS business rank or non-Schengen visa restrictions compared to mainland Europe.
+          </div>
+        </div>
+      </div>
 
-      <!-- Customize the data-value and text of these items to match your offerings -->
-      <ul id="preference-list">
-        <li class="rank-item" data-value="AR / VR Solutions">
-          <div class="item-left">
-            <span class="rank-badge">1</span>
-            <span class="item-text">AR / VR Interactive Solutions</span>
-          </div>
-          <div class="controls">
-            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
-            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
-          </div>
-        </li>
-        <li class="rank-item" data-value="Web & App Development">
-          <div class="item-left">
-            <span class="rank-badge">2</span>
-            <span class="item-text">Web & App Development</span>
-          </div>
-          <div class="controls">
-            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
-            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
-          </div>
-        </li>
-        <li class="rank-item" data-value="3D Design & Branding">
-          <div class="item-left">
-            <span class="rank-badge">3</span>
-            <span class="item-text">3D Design & Branding</span>
-          </div>
-          <div class="controls">
-            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
-            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
-          </div>
-        </li>
-        <li class="rank-item" data-value="Consulting & Collaboration">
-          <div class="item-left">
-            <span class="rank-badge">4</span>
-            <span class="item-text">Consulting & Collaboration</span>
-          </div>
-          <div class="controls">
-            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
-            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
-          </div>
-        </li>
-      </ul>
+      <div class="card">
+        <h2>3. Rank Your Top 3 Preferences (No Repeats)</h2>
 
-      <label for="notes">Anything else you'd like to share? (Optional)</label>
-      <textarea id="notes" name="notes" rows="3" placeholder="Project timeline, specific ideas, or questions..."></textarea>
+        <div class="rank-row">
+          <label for="choice1">1st Preference (3 Points) *</label>
+          <select id="choice1" required>
+            <option value="">-- Select your #1 choice --</option>
+            <option value="SDA Bocconi, Milan">SDA Bocconi School of Management — Milan, Italy</option>
+            <option value="POLIMI (MIP), Milan">MIP Politecnico di Milano (POLIMI) — Milan, Italy</option>
+            <option value="WU Vienna, Austria">WU Vienna — Vienna, Austria</option>
+            <option value="IESEG, Paris">IÉSEG School of Management — Paris, France</option>
+            <option value="Reading Malaysia (Henley)">University of Reading Malaysia (Henley) — Johor</option>
+            <option value="University of Huddersfield, UK">University of Huddersfield — UK</option>
+            <option value="SKOLKOVO, Moscow">Moscow School of Management SKOLKOVO — Russia</option>
+          </select>
+        </div>
 
-      <button type="submit" id="submit-btn">Submit Preferences</button>
-      <div id="status-msg"></div>
+        <div class="rank-row">
+          <label for="choice2">2nd Preference (2 Points) *</label>
+          <select id="choice2" required>
+            <option value="">-- Select your #2 choice --</option>
+            <option value="SDA Bocconi, Milan">SDA Bocconi School of Management — Milan, Italy</option>
+            <option value="POLIMI (MIP), Milan">MIP Politecnico di Milano (POLIMI) — Milan, Italy</option>
+            <option value="WU Vienna, Austria">WU Vienna — Vienna, Austria</option>
+            <option value="IESEG, Paris">IÉSEG School of Management — Paris, France</option>
+            <option value="Reading Malaysia (Henley)">University of Reading Malaysia (Henley) — Johor</option>
+            <option value="University of Huddersfield, UK">University of Huddersfield — UK</option>
+            <option value="SKOLKOVO, Moscow">Moscow School of Management SKOLKOVO — Russia</option>
+          </select>
+        </div>
+
+        <div class="rank-row">
+          <label for="choice3">3rd Preference (1 Point) *</label>
+          <select id="choice3" required>
+            <option value="">-- Select your #3 choice --</option>
+            <option value="SDA Bocconi, Milan">SDA Bocconi School of Management — Milan, Italy</option>
+            <option value="POLIMI (MIP), Milan">MIP Politecnico di Milano (POLIMI) — Milan, Italy</option>
+            <option value="WU Vienna, Austria">WU Vienna — Vienna, Austria</option>
+            <option value="IESEG, Paris">IÉSEG School of Management — Paris, France</option>
+            <option value="Reading Malaysia (Henley)">University of Reading Malaysia (Henley) — Johor</option>
+            <option value="University of Huddersfield, UK">University of Huddersfield — UK</option>
+            <option value="SKOLKOVO, Moscow">Moscow School of Management SKOLKOVO — Russia</option>
+          </select>
+        </div>
+
+        <div id="errBox" class="error-msg">Please select three different universities for your 1st, 2nd, and 3rd preferences.</div>
+      </div>
+
+      <button type="submit" class="btn" id="submitBtn">Submit My GFS Preference</button>
     </form>
+
+    <div class="success-box" id="successBox">
+      <h3 style="margin:0 0 6px;">Response Recorded!</h3>
+      <p style="margin:0; font-size:14px;">Thanks for voting. CR will share the final weighted Top 2 consensus with the batch shortly.</p>
+    </div>
+
+    <div class="cr-panel">
+      CR Admin: <span class="cr-link" onclick="toggleAdmin()">View Live Tally & Export CSV</span>
+      <div id="adminBox" style="display:none; text-align:left; margin-top:12px;" class="card">
+        <h2>Live Borda Tally (Local / Sheet Sync)</h2>
+        <div id="tallyTable"></div>
+        <button type="button" class="btn" style="margin-top:12px; padding:9px; font-size:13px;" onclick="downloadCSV()">Download Responses CSV</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw364MwXquthQeGy_qZJVZFQrXHQ6tYJkoW152YXWQKPhe4S3OC-Mn4NdJ4qFnVb4sFeQ/exec";
+    // Optional: Paste your Google Apps Script Web App URL from sem3feedback here to save to Google Sheets
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw364MwXquthQeGy_qZJVZFQrXHQ6tYJkoW152YXWQKPhe4S3OC-Mn4NdJ4qFnVb4sFeQ/exec";
 
-    const list = document.getElementById("preference-list");
-    const form = document.getElementById("pref-form");
-    const submitBtn = document.getElementById("submit-btn");
-    const statusMsg = document.getElementById("status-msg");
+    const form = document.getElementById("gfsForm");
+    const errBox = document.getElementById("errBox");
 
-    // Update #1, #2, #3, #4 badges whenever order changes
-    function updateRankBadges() {
-      const items = list.querySelectorAll(".rank-item");
-      items.forEach((item, index) => {
-        item.querySelector(".rank-badge").textContent = index + 1;
-      });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errBox.style.display = "none";
+
+      const name = document.getElementById("studentName").value.trim();
+      const entryNo = document.getElementById("entryNo").value.trim().toUpperCase();
+      const c1 = document.getElementById("choice1").value;
+      const c2 = document.getElementById("choice2").value;
+      const c3 = document.getElementById("choice3").value;
+
+      if (new Set([c1, c2, c3]).size < 3) {
+        errBox.style.display = "block";
+        return;
+      }
+
+      const payload = { timestamp: new Date().toISOString(), name, entryNo, choice1: c1, choice2: c2, choice3: c3 };
+
+      // Save locally & prevent duplicate entry number overwrite
+      const stored = JSON.parse(localStorage.getItem("gfs_votes") || "[]").filter(v => v.entryNo !== entryNo);
+      stored.push(payload);
+      localStorage.setItem("gfs_votes", JSON.stringify(stored));
+
+      if (APPS_SCRIPT_URL) {
+        const btn = document.getElementById("submitBtn");
+        btn.disabled = true;
+        btn.textContent = "Submitting...";
+        try {
+          await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) { console.error(err); }
+      }
+
+      form.style.display = "none";
+      document.getElementById("successBox").style.display = "block";
+      renderTally();
+    });
+
+    function toggleAdmin() {
+      const box = document.getElementById("adminBox");
+      box.style.display = box.style.display === "none" ? "block" : "none";
+      renderTally();
     }
 
-    // Initialize touch & mouse drag-and-drop
-    new Sortable(list, {
-      animation: 150,
-      ghostClass: "sortable-ghost",
-      onEnd: updateRankBadges
-    });
+    function renderTally() {
+      const votes = JSON.parse(localStorage.getItem("gfs_votes") || "[]");
+      const scores = {};
+      votes.forEach(v => {
+        scores[v.choice1] = (scores[v.choice1] || 0) + 3;
+        scores[v.choice2] = (scores[v.choice2] || 0) + 2;
+        scores[v.choice3] = (scores[v.choice3] || 0) + 1;
+      });
+      const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+      let html = `<p style="margin:0 0 6px;font-size:13px;">Total Responses: <strong>${votes.length}</strong></p>`;
+      html += `<table><tr><th>Rank</th><th>University</th><th>Weighted Points</th></tr>`;
+      sorted.forEach(([uni, pts], i) => {
+        html += `<tr><td><strong>#${i + 1}</strong></td><td>${uni}</td><td>${pts} pts</td></tr>`;
+      });
+      html += `</table>`;
+      document.getElementById("tallyTable").innerHTML = html;
+    }
 
-    // Support arrow button clicks for quick mobile reordering
-    list.addEventListener("click", (e) => {
-      const btn = e.target.closest(".move-btn");
-      if (!btn) return;
-
-      const item = btn.closest(".rank-item");
-      if (btn.classList.contains("up-btn") && item.previousElementSibling) {
-        list.insertBefore(item, item.previousElementSibling);
-      } else if (btn.classList.contains("down-btn") && item.nextElementSibling) {
-        list.insertBefore(item.nextElementSibling, item);
-      }
-      updateRankBadges();
-    });
-
-    // Submit form data to Google Sheets
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Saving...";
-      statusMsg.textContent = "";
-
-      const rankedItems = Array.from(list.querySelectorAll(".rank-item")).map(
-        (item) => item.getAttribute("data-value")
-      );
-
-      const payload = {
-        name: document.getElementById("name").value.trim(),
-        contact: document.getElementById("contact").value.trim(),
-        rank1: rankedItems[0] || "",
-        rank2: rankedItems[1] || "",
-        rank3: rankedItems[2] || "",
-        rank4: rankedItems[3] || "",
-        notes: document.getElementById("notes").value.trim()
-      };
-
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      })
-        .then(() => {
-          statusMsg.style.color = "#4ade80";
-          statusMsg.textContent = "Preferences saved! Looking forward to connecting.";
-          form.reset();
-        })
-        .catch(() => {
-          statusMsg.style.color = "#f87171";
-          statusMsg.textContent = "Something went wrong. Please try again.";
-        })
-        .finally(() => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Submit Preferences";
-        });
-    });
+    function downloadCSV() {
+      const votes = JSON.parse(localStorage.getItem("gfs_votes") || "[]");
+      if (!votes.length) return alert("No votes recorded yet.");
+      const csv = [
+        ["Timestamp", "Name", "EntryNo", "1st_Choice", "2nd_Choice", "3rd_Choice"].join(","),
+        ...votes.map(v => [v.timestamp, `"${v.name}"`, v.entryNo, `"${v.choice1}"`, `"${v.choice2}"`, `"${v.choice3}"`].join(","))
+      ].join("\n");
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+      a.download = "DMS_GFS_Batch_Preferences.csv";
+      a.click();
+    }
   </script>
-
 </body>
 </html>
+
+
