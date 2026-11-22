@@ -1,1 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Your Preferences</title>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --item: #334155;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
 
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: var(--card);
+      width: 100%;
+      max-width: 480px;
+      padding: 28px 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin: 0 0 6px 0;
+    }
+
+    p.subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 0 0 22px 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #e2e8f0;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      background-color: #0f172a;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .rank-hint {
+      font-size: 0.8rem;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #preference-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 22px 0;
+    }
+
+    .rank-item {
+      background-color: var(--item);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: grab;
+      user-select: none;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .rank-item:active {
+      cursor: grabbing;
+      border-color: var(--accent);
+    }
+
+    .sortable-ghost {
+      opacity: 0.4;
+    }
+
+    .item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .rank-badge {
+      background-color: var(--accent);
+      color: #0f172a;
+      font-weight: 700;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .item-text {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .controls {
+      display: flex;
+      gap: 6px;
+    }
+
+    .move-btn {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: var(--text);
+      border-radius: 6px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .move-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--accent);
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button[type="submit"]:hover {
+      background-color: var(--accent-hover);
+      color: #fff;
+    }
+
+    button[type="submit"]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #status-msg {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Thanks for scanning!</h1>
+    <p class="subtitle">Rank your priorities below so I can tailor our next conversation.</p>
+
+    <form id="pref-form">
+      <label for="name">Your Name *</label>
+      <input type="text" id="name" name="name" placeholder="e.g., Rohan Sharma" required>
+
+      <label for="contact">Email or WhatsApp Number *</label>
+      <input type="text" id="contact" name="contact" placeholder="e.g., +91 98765 43210 or name@email.com" required>
+
+      <label>Arrange Your Preferences in Order</label>
+      <span class="rank-hint">Drag items or tap arrows (#1 = Highest Priority)</span>
+
+      <!-- Customize the data-value and text of these items to match your offerings -->
+      <ul id="preference-list">
+        <li class="rank-item" data-value="AR / VR Solutions">
+          <div class="item-left">
+            <span class="rank-badge">1</span>
+            <span class="item-text">AR / VR Interactive Solutions</span>
+          </div>
+          <div class="controls">
+            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
+            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
+          </div>
+        </li>
+        <li class="rank-item" data-value="Web & App Development">
+          <div class="item-left">
+            <span class="rank-badge">2</span>
+            <span class="item-text">Web & App Development</span>
+          </div>
+          <div class="controls">
+            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
+            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
+          </div>
+        </li>
+        <li class="rank-item" data-value="3D Design & Branding">
+          <div class="item-left">
+            <span class="rank-badge">3</span>
+            <span class="item-text">3D Design & Branding</span>
+          </div>
+          <div class="controls">
+            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
+            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
+          </div>
+        </li>
+        <li class="rank-item" data-value="Consulting & Collaboration">
+          <div class="item-left">
+            <span class="rank-badge">4</span>
+            <span class="item-text">Consulting & Collaboration</span>
+          </div>
+          <div class="controls">
+            <button type="button" class="move-btn up-btn" aria-label="Move up">▲</button>
+            <button type="button" class="move-btn down-btn" aria-label="Move down">▼</button>
+          </div>
+        </li>
+      </ul>
+
+      <label for="notes">Anything else you'd like to share? (Optional)</label>
+      <textarea id="notes" name="notes" rows="3" placeholder="Project timeline, specific ideas, or questions..."></textarea>
+
+      <button type="submit" id="submit-btn">Submit Preferences</button>
+      <div id="status-msg"></div>
+    </form>
+  </div>
+
+  <script>
+    // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW
+    const SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+
+    const list = document.getElementById("preference-list");
+    const form = document.getElementById("pref-form");
+    const submitBtn = document.getElementById("submit-btn");
+    const statusMsg = document.getElementById("status-msg");
+
+    // Update #1, #2, #3, #4 badges whenever order changes
+    function updateRankBadges() {
+      const items = list.querySelectorAll(".rank-item");
+      items.forEach((item, index) => {
+        item.querySelector(".rank-badge").textContent = index + 1;
+      });
+    }
+
+    // Initialize touch & mouse drag-and-drop
+    new Sortable(list, {
+      animation: 150,
+      ghostClass: "sortable-ghost",
+      onEnd: updateRankBadges
+    });
+
+    // Support arrow button clicks for quick mobile reordering
+    list.addEventListener("click", (e) => {
+      const btn = e.target.closest(".move-btn");
+      if (!btn) return;
+
+      const item = btn.closest(".rank-item");
+      if (btn.classList.contains("up-btn") && item.previousElementSibling) {
+        list.insertBefore(item, item.previousElementSibling);
+      } else if (btn.classList.contains("down-btn") && item.nextElementSibling) {
+        list.insertBefore(item.nextElementSibling, item);
+      }
+      updateRankBadges();
+    });
+
+    // Submit form data to Google Sheets
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Saving...";
+      statusMsg.textContent = "";
+
+      const rankedItems = Array.from(list.querySelectorAll(".rank-item")).map(
+        (item) => item.getAttribute("data-value")
+      );
+
+      const payload = {
+        name: document.getElementById("name").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        rank1: rankedItems[0] || "",
+        rank2: rankedItems[1] || "",
+        rank3: rankedItems[2] || "",
+        rank4: rankedItems[3] || "",
+        notes: document.getElementById("notes").value.trim()
+      };
+
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      })
+        .then(() => {
+          statusMsg.style.color = "#4ade80";
+          statusMsg.textContent = "Preferences saved! Looking forward to connecting.";
+          form.reset();
+        })
+        .catch(() => {
+          statusMsg.style.color = "#f87171";
+          statusMsg.textContent = "Something went wrong. Please try again.";
+        })
+        .finally(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Preferences";
+        });
+    });
+  </script>
+
+</body>
+</html>
